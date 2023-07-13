@@ -33,9 +33,11 @@ class DetailView(generics.RetrieveUpdateDestroyAPIView):
         serializer = ClothSerializer(queryset, many=False)
         return Response(serializer.data)
 
+
 class UpdateView(generics.UpdateAPIView):
     queryset = Cloths.objects.all()
     serializer_class = ClothSerializer
+
 
 class DeleteView(generics.DestroyAPIView):
     queryset = Cloths.objects.all()
