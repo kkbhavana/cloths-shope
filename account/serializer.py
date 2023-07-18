@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from .models import User
 
 
@@ -23,3 +25,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             last_name=validate_data.get('last_name'),
         )
         return user
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self,attrs):
+        data = super(CustomTokenObtainPairSerializer,self).validate(attrs)
+
+        user = UserSerializer(self.user)
+        data.update({'user':user.data})
+        return data
