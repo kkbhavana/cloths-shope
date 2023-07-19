@@ -1,5 +1,7 @@
 from django.db import models
 
+from account.models import User
+
 
 # Create your models here.
 class Category(models.Model):
@@ -19,3 +21,9 @@ class Cloths(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Cloths, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)

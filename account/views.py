@@ -1,5 +1,7 @@
 from django.shortcuts import render
-from rest_framework import status
+from rest_framework import status, permissions
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -23,9 +25,18 @@ class Register(APIView):
             'access': str(refresh.access_token),
             'user': user.data
         }
-        return Response(data,status=status.HTTP_201_CREATED)
+        return Response(data, status=status.HTTP_201_CREATED)
+
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
+class VerifyUser(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    # authentication_classes = (TokenAuthentication)
 
+    def get(self,request):
+        user = request.user
+        user = UserSerializer(user)
+        data = {'user':user.data}
+        return Response(data,status=status.HTTP_200_OK)

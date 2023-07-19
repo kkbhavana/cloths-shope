@@ -7,7 +7,10 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = ('id','email', 'password', 'first_name', 'last_name')
+
+    # def get_email(self,obj):
+    #     if self.context
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -15,7 +18,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('email', 'password', 'first_name', 'last_name')
+        fields = ('id','email', 'password', 'first_name', 'last_name')
 
     def create(self, validate_data):
         user = User.objects.create_user(
