@@ -27,3 +27,10 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Cloths, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
+
+class Order(models.Model):
+    product = models.ForeignKey(Cloths,on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.product.title

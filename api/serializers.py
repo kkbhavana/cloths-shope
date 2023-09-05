@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Cloths, Cart
+from .models import Cloths, Cart, Order
 
 
 class ClothSerializer(serializers.ModelSerializer):
@@ -10,4 +10,10 @@ class ClothSerializer(serializers.ModelSerializer):
 class CartSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cart
+        fields = "__all__"
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
         fields = "__all__"

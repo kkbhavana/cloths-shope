@@ -4,9 +4,9 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Cloths,Cart
-from .serializers import ClothSerializer,CartSerializer
-from rest_framework import generics, status, permissions
+from .models import Cloths, Cart, Order
+from .serializers import ClothSerializer, CartSerializer, OrderSerializer
+from rest_framework import status, permissions, generics
 
 
 # Create your views here.
@@ -24,7 +24,7 @@ class ListCloths(generics.ListCreateAPIView):
 
 
 class DetailView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     serializer_class = ClothSerializer
     queryset = Cloths.objects.all()
 
@@ -48,7 +48,7 @@ class DeleteView(generics.DestroyAPIView):
     serializer_class = ClothSerializer
 
 class AddToCartView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     def post(self,request):
         product_id = request.data.get('product_id')
         quantity = request.data.get('quantity')
@@ -63,3 +63,11 @@ class AddToCartView(APIView):
         except ObjectDoesNotExist:
             return Response({"error":"Product not found"},status=status.HTTP_404_NOT_FOUND)
 
+
+class PaymentView(APIView):
+    def post(self, request):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
